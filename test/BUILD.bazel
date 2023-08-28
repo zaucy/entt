@@ -1,0 +1,47 @@
+load("@rules_cc//cc:defs.bzl", "cc_test")
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
+_GTEST_FILTER = ":".join([
+    "SigH.ConstNonConstNoExcept",
+    "MetaCtor.Func",
+    "MetaCtor.CastAndConvert",
+    "MetaCtor.WrongConstness",
+    "MetaCtor.FuncMetaAnyArgs",
+    "MetaCtor.FuncCastAndConvert",
+    "MetaCtor.FuncArithmeticConversion",
+    "MetaCtor.NonDefaultConstructibleType",
+    "MetaData.Const",
+    "MetaData.SetConvert",
+    "MetaData.SetGetBaseData",
+    "MetaDtor.Functionalities",
+    "MetaDtor.AsRefConstruction",
+    "MetaDtor.ReRegistration",
+    "MetaFunc.StaticAsConstMember",
+    "MetaFunc.InvokeBaseFunction",
+    "MetaFunc.InvokeFromBase",
+    "MetaType.TemplateInfo",
+    "MetaUtility.MetaConstructArgsOnly",
+    "MetaData.SetGetFromBase",
+])
+
+print(_GTEST_FILTER)
+
+cc_test(
+    name = "test",
+    srcs = glob(["entt/**/*.cpp", "entt/**/*.hpp", "entt/**/*.h"]),
+    copts = selects.with_or({
+        ("//conditions:default", "@rules_cc//cc/compiler:clang", "@rules_cc//cc/compiler:gcc", "@rules_cc//cc/compiler:mingw-gcc"): [
+            "-std=c++17",
+        ],
+        ("@rules_cc//cc/compiler:msvc-cl", "@rules_cc//cc/compiler:clang-cl"): [
+            "/std:c++17",
+            "/permissive-",
+        ],
+    }),
+    args = ["--gtest_filter=-{}".format(_GTEST_FILTER)],
+    deps = [
+        "@entt",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

@@ -11,3 +11,4 @@ cpp.hint
 
 # Bazel
 /bazel-*
+/test/bazel-*
