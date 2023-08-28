@@ -13,5 +13,5 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
-    - run: bazelisk --config=ci test ...
+    - run: bazelisk test --config=ci ...
       working-directory: test
