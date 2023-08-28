@@ -1,0 +1,16 @@
+name: bazel
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: bazelisk test ...
+      working-directory: test
