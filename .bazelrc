@@ -8,3 +8,10 @@ build --incompatible_strict_action_env
 # required for googletest 
 build:linux --cxxopt=-std=c++17
 build:macos --cxxopt=-std=c++17
+
+common:ci --announce_rc
+common:ci --verbose_failures
+common:ci --keep_going
+common:ci --disk_cache=~/.cache/bazel-disk-cache
+
+try-import %workspace%/user.bazelrc
